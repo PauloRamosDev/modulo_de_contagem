@@ -2,14 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:modulo_de_contagem/custom_alert_dialog.dart';
-import 'package:modulo_de_contagem/db-helper.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:modulo_de_contagem/firebaseHelper.dart';
 import 'package:modulo_de_contagem/input-dao.dart';
 import 'package:modulo_de_contagem/pageContagem.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/page_adminstrador.dart';
 import 'package:modulo_de_contagem/ui/page_layout_contrutor/page_builder_layout.dart';
-import 'package:modulo_de_contagem/ui/page_layout_contrutor/widget/widget_builder_field.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,6 +16,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('pt','BR')
+      ],
       title: 'Modulo de contagem',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -63,14 +69,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) => PageBuilderLayout()));
+                          builder: (BuildContext context) =>
+                              PageBuilderLayout()));
                   break;
               }
             },
           ),
         ],
       ),
-body: PageAdministrador(),
+      body: PageAdministrador(),
 //      body: FutureBuilder<List<Field>>(
 //          future: BaseDAO().findAll(),
 //          builder: (context, snapshot) {

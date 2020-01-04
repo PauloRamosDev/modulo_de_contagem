@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:modulo_de_contagem/pageCarregarArquivo.dart';
+import 'package:modulo_de_contagem/ui/page_adminstrador/novo_servico/widget/custom_drop_down.dart';
 import 'package:modulo_de_contagem/ui/page_layout_contrutor/page_builder_layout.dart';
-import 'package:path_provider/path_provider.dart';
 
 class PageNovoServico extends StatefulWidget {
   @override
@@ -14,8 +13,6 @@ class PageNovoServico extends StatefulWidget {
 class _PageNovoServicoState extends State<PageNovoServico> {
   final _formKey = GlobalKey<FormState>();
 
-  var _valueInput;
-  var _valueOutput;
   var _valueTipo;
   var _valueBase = false;
   bool inputExist = false;
@@ -80,37 +77,12 @@ class _PageNovoServicoState extends State<PageNovoServico> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: Colors.grey)),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: DropdownButton(
-                    underline: Container(),
-                    value: _valueTipo,
-                    items: ['Auditoria', 'Contagem', 'Pesquisa', 'Inventario']
-                        .map((text) {
-                      return DropdownMenuItem(
-                        child: Text(text),
-                        value: text,
-                      );
-                    }).toList(),
-                    onChanged: (text) {
-                      print(text);
-                      setState(() {
-                        _valueTipo = text;
-                      });
-                    },
-                    hint: Text("Tipo de Serviço"),
-                  ),
-                ),
-              ),
-            ]),
-          ),
+          CustomDropDown(
+              lista: ['Auditoria', 'Contagem', 'Pesquisa', 'Inventario'],
+              hint: 'Tipo de Serviço',
+              onSelectedItem: (item) {
+                print(item);
+              }),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(children: [
@@ -251,9 +223,19 @@ class _PageNovoServicoState extends State<PageNovoServico> {
                   'Modelo BD path': input.path,
                   'Modelo Output path': input.path,
                   'Base': _valueBase,
-                  'Base path':base.path
+                  'Base path': base.path
                 };
 
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Text(
+                          mapNovoServico.toString(),
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    });
                 print(mapNovoServico.toString());
               } //
             },

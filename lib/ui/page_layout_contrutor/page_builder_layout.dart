@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:modulo_de_contagem/firebaseHelper.dart';
 import 'package:modulo_de_contagem/ui/page_layout_contrutor/widget/widget_builder_field.dart';
 import 'package:path_provider/path_provider.dart';
 

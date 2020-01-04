@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:modulo_de_contagem/ui/page_adminstrador/novo_cliente/page_novo_cliente.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/novo_servico/page_novo_servico.dart';
+import 'package:modulo_de_contagem/ui/page_adminstrador/widget/custom_card_view.dart';
 
 class PageAdministrador extends StatelessWidget {
   @override
@@ -94,12 +96,7 @@ class PageAdministrador extends StatelessWidget {
                 )),
           ),
         ),
-        Card(
-          child: SizedBox.expand(
-              child: Container(
-            color: Colors.red,
-          )),
-        ),
+        CustomCardView(Icons.account_circle, 'Novo Cliente', 4, 5,PageNovoCliente()),
         Card(
           child: SizedBox.expand(
               child: Container(
