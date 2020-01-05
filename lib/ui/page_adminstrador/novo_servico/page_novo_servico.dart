@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:modulo_de_contagem/ui/commons/widget/custom_picker_file.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/novo_servico/widget/custom_drop_down.dart';
 import 'package:modulo_de_contagem/ui/page_layout_contrutor/page_builder_layout.dart';
 
@@ -144,67 +145,7 @@ class _PageNovoServicoState extends State<PageNovoServico> {
           ),
           Visibility(
             visible: _valueBase,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('Arquivo: $baseName'),
-                ),
-                RaisedButton(
-                  onPressed: () async {
-                    File _base = await showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                              title: Text('Selecione a base de dados'),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    '\t Atenção a base deve estar na sequência e a quantidade de colunas informada no Modelo de Input.\n',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  ButtonBar(
-                                    children: <Widget>[
-                                      FlatButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('Cancelar')),
-                                      RaisedButton(
-                                        onPressed: () async {
-                                          try {
-                                            File file =
-                                                await FilePicker.getFile(
-                                                    type: FileType.CUSTOM,
-                                                    fileExtension: 'CSV');
-
-                                            Navigator.pop(context, file);
-                                          } catch (error) {
-                                            print(error.toString());
-                                          }
-                                        },
-                                        child: Text('Selecionar'),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ));
-                        });
-
-                    if (await _base.exists()) {
-                      base = _base;
-
-                      baseName =
-                          _base.path.substring(_base.path.lastIndexOf("/") + 1);
-                      setState(() {});
-                    }
-                  },
-                  child: Text('Buscar'),
-                )
-              ],
-            ),
+            child: CustomPickerFile(onSelectedPathFile: (path){}),
           ),
           RaisedButton(
             onPressed: () {
@@ -220,7 +161,7 @@ class _PageNovoServicoState extends State<PageNovoServico> {
                   'Nome': _cNome.text,
                   'Cliente': _cCliente.text,
                   'Tipo de Serviço': _valueTipo.toString(),
-                  'Modelo BD path': input.path,
+                  'Modelo BD path': '',
                   'Modelo Output path': input.path,
                   'Base': _valueBase,
                   'Base path': base.path

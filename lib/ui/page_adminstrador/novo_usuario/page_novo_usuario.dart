@@ -1,26 +1,20 @@
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modulo_de_contagem/ui/commons/widget/custom_picker_file.dart';
-import 'package:modulo_de_contagem/ui/page_adminstrador/novo_cliente/bloc_page_novo_cliente.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/novo_servico/widget/custom_drop_down.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/novo_servico/widget/custom_form_field.dart';
 
-class PageNovoCliente extends StatefulWidget {
+class PageNovoUsuario extends StatefulWidget {
   @override
-  _PageNovoClienteState createState() => _PageNovoClienteState();
+  _PageNovoUsuarioState createState() => _PageNovoUsuarioState();
 }
 
-class _PageNovoClienteState extends State<PageNovoCliente> {
+class _PageNovoUsuarioState extends State<PageNovoUsuario> {
   final _formKey = GlobalKey<FormState>();
-
-  BlocNovoCliente bloc = BlocNovoCliente();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cliente'),
+        title: Text('Novo Usuario'),
       ),
       body: _body(),
     );
@@ -31,24 +25,21 @@ class _PageNovoClienteState extends State<PageNovoCliente> {
       key: _formKey,
       child: ListView(
         children: <Widget>[
-          CustomFormField('Cliente', bloc.cliente, true),
-          CustomFormField('Endereço', bloc.endereco, true),
-          CustomFormField('Nome Para Contato', bloc.nomeContato, true),
-          CustomFormField('E-mail', bloc.email, true),
-          CustomFormField('Telefone', bloc.telefone, true),
+          CustomFormField('Matricula', null, true),
+          CustomFormField('Nome', null, true),
           CustomDropDown(
-            hint: 'Selecione o segmento',
-            onSelectedItem: (item) {
-              bloc.segmento = item;
-            },
-            lista: ['Varejo', 'Industria', 'Informatica'],
-          ),
-          CustomPickerFile(
-              fileType: FileType.IMAGE,
-              title: 'Logo',
-              onSelectedPathFile: (path) {
-                bloc.logo = path;
+              lista: ['user', 'moderador', 'administrador'],
+              hint: 'Tipo de Acesso',
+              onSelectedItem: (select) {
+                print(select);
               }),
+          CustomFormField('Senha', null, true),
+          CustomPickerFile(
+            title: 'Imagem',
+            onSelectedPathFile: (path) {
+              print(path);
+            },
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -60,7 +51,7 @@ class _PageNovoClienteState extends State<PageNovoCliente> {
                         child: Text('validar'),
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            print(bloc.submit().toString());
+                            print('');
                           } //
                         }),
                   ),

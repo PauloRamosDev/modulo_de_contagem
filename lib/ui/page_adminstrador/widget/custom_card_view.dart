@@ -13,7 +13,7 @@ class CustomCardView extends StatelessWidget {
     Color(0xFFF00B51),
     Color(0xFF7366FF),
     Color(0xFF00FFED),
-    Color(0xFF00B8BA),
+    Color(0xFF00FFBA),
     Color(0xFFFF9897),
     Color(0xFFF650A0),
   ];
