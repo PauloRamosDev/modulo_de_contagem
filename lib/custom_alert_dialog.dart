@@ -124,7 +124,7 @@ class _DialogDownloaderState extends State<DialogDownloader> {
   Future<String> download(Dio dio, String url) async {
     CancelToken cancelToken = CancelToken();
     Directory path = await getTemporaryDirectory();
-    var pathFinal = path.path + '/archive.zip';
+    var pathFinal = path.path + '/archive.json';
     var res = await File(pathFinal).exists();
     if(!res){
 

@@ -3,11 +3,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:modulo_de_contagem/custom_alert_dialog.dart';
+import 'package:modulo_de_contagem/db-helper.dart';
+import 'package:modulo_de_contagem/downloader.dart';
 import 'package:modulo_de_contagem/firebaseHelper.dart';
 import 'package:modulo_de_contagem/input-dao.dart';
 import 'package:modulo_de_contagem/pageContagem.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/page_adminstrador.dart';
 import 'package:modulo_de_contagem/ui/page_layout_contrutor/page_builder_layout.dart';
+import 'package:sqflite/sqflite.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,9 +25,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalMaterialLocalizations.delegate
       ],
-      supportedLocales: [
-        const Locale('pt','BR')
-      ],
+      supportedLocales: [const Locale('pt', 'BR')],
       title: 'Modulo de contagem',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -115,8 +117,75 @@ class _MyHomePageState extends State<MyHomePage> {
 //            }
 //          }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _pageRouter(context);
+        onPressed: () async {
+//          _pageRouter(context);
+
+          var input =
+              'https://firebasestorage.googleapis.com/v0/b/app-projeto-4cc0a.appspot.com/o/input%2Fteste%2Flogist0047.csv?alt=media&token=4e0ae9f8-220f-452a-9beb-cacfbe55d033';
+          var layout =
+              'https://firebasestorage.googleapis.com/v0/b/app-projeto-4cc0a.appspot.com/o/input%2Fteste%2FlayoutBaseDados.txt?alt=media&token=16c12b27-7c95-4404-86ae-766dba28b4d2';
+
+//
+//        var retorno = await
+//          showDialog(
+//              barrierDismissible: false,
+//              context: context,
+//              builder: (context) {
+//                return DialogDownloader(
+//                    title: 'Download',
+//                    description: 'Base de dados',
+//                    buttonText: 'Cancelar',
+//                    url: layout);
+//              });
+//
+//        File file = File(retorno);
+//
+//        var json = await file.readAsString();
+//
+//        List<dynamic> decoder = jsonDecode(json);
+//
+//        decoder.forEach((linha)=>DatabaseHelper().alterTable(linha['field1'], null));
+
+          var retornoIput = await showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) {
+                return DialogDownloader(
+                    title: 'Download',
+                    description: 'Arquivo cache',
+                    buttonText: 'Cancelar',
+                    url: input);
+              });
+
+          File fileInput = File(retornoIput);
+
+          fileInput.readAsLines(encoding: latin1).then((linha) {
+            List<String> cabecalho = linha.first.split(';');
+
+//            cabecalho.forEach((collun)=>DatabaseHelper().alterTable(collun, null));
+
+            for (var i = 0; i < linha.length; i++) {
+              var dadosLn = linha[i].split(';');
+
+              if (i > 0) {
+                print(dadosLn.length);
+
+                var map = Map<String, dynamic>();
+
+                for (var posCabecalho = 0; posCabecalho < cabecalho.length; posCabecalho++) {
+
+                  print('cabecalho ' + cabecalho[posCabecalho].toString());
+                  print('linha ' + dadosLn[posCabecalho].toString());
+                  map[cabecalho[posCabecalho]] =
+                      dadosLn[posCabecalho].trimLeft().trimRight();
+                }
+
+                print(map.toString());
+
+                save(map);
+              } else {}
+            }
+          });
 
 //          showDialog(
 //              context: context,
@@ -214,6 +283,13 @@ class _MyHomePageState extends State<MyHomePage> {
 //        if (resposta) setState(() {});
 //      }
 //    }
+  }
+
+  Future<int> save(Map field) async {
+    var dbClient = await DatabaseHelper.getInstance().db;
+    var id = await dbClient.insert("field", field,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
   }
 }
 
