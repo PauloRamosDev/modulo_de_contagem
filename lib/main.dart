@@ -154,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     title: 'Download',
                     description: 'Arquivo cache',
                     buttonText: 'Cancelar',
-                    url: input);
+                    url: layout);
               });
 
           File fileInput = File(retornoIput);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modulo_de_contagem/pageContagem.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/novo_cliente/page_novo_cliente.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/novo_evento/page_novo_evento.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/novo_servico/page_novo_servico.dart';
@@ -27,6 +28,7 @@ class PageAdministrador extends StatelessWidget {
             Icons.add_circle_outline, 'Novo Usuario', 3, 1, PageNovoUsuario()),
         CustomCardView(Icons.event, 'Novo Evento', 1, 4, PageNovoEvento()),
         CustomCardView(Icons.dashboard, 'Dashboard', 5, 2, PageNovoEvento()),
+        CustomCardView(Icons.work, 'Contagem', 5, 0, PageContagem()),
       ],
     );
   }
