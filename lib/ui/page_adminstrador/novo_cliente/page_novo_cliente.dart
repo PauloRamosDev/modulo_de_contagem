@@ -1,10 +1,10 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:modulo_de_contagem/ui/commons/widget/custom_form_field.dart';
 import 'package:modulo_de_contagem/ui/commons/widget/custom_picker_file.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/novo_cliente/bloc_page_novo_cliente.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/novo_servico/widget/custom_drop_down.dart';
-import 'package:modulo_de_contagem/ui/page_adminstrador/novo_servico/widget/custom_form_field.dart';
 
 class PageNovoCliente extends StatefulWidget {
   @override

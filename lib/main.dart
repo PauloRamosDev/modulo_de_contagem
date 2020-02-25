@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:modulo_de_contagem/custom_alert_dialog.dart';
 import 'package:modulo_de_contagem/db-helper.dart';
-import 'package:modulo_de_contagem/downloader.dart';
 import 'package:modulo_de_contagem/firebaseHelper.dart';
 import 'package:modulo_de_contagem/input-dao.dart';
 import 'package:modulo_de_contagem/pageContagem.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/page_adminstrador.dart';
 import 'package:modulo_de_contagem/ui/page_layout_contrutor/page_builder_layout.dart';
+import 'package:modulo_de_contagem/ui/page_login/page_login.dart';
 import 'package:sqflite/sqflite.dart';
 
 void main() => runApp(MyApp());
@@ -30,10 +30,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(
-        title: 'Home',
-      ),
-//      home: MyHomePage(title: 'Contagem'),
+//      home: MyHomePage(
+//        title: 'Home',
+//      ),
+      home: PageLogin(),
     );
   }
 }

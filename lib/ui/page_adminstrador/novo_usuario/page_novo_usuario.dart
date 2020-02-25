@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modulo_de_contagem/ui/commons/widget/custom_picker_file.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/novo_servico/widget/custom_drop_down.dart';
-import 'package:modulo_de_contagem/ui/page_adminstrador/novo_servico/widget/custom_form_field.dart';
+import 'file:///C:/Users/paulo/Desktop/apps_flutter/modulo_de_contagem/lib/ui/commons/widget/custom_form_field.dart';
 
 class PageNovoUsuario extends StatefulWidget {
   @override

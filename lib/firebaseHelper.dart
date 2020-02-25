@@ -15,7 +15,7 @@ class FirebaseHelper {
 
     File output = await _downloadFile(
 //        'https://firebasestorage.googleapis.com/v0/b/app-projeto-4cc0a.appspot.com/o/input%2Fteste%2FInput.zip?alt=media&token=a59d81bb-e5fc-423c-836e-bea953a7b64f',
-       'https://firebasestorage.googleapis.com/v0/b/app-projeto-4cc0a.appspot.com/o/input%2Fteste%2Fapp.zip?alt=media&token=ff7eeb57-4e86-4c5a-a5cb-e7206de91b9e',
+        'https://firebasestorage.googleapis.com/v0/b/app-projeto-4cc0a.appspot.com/o/input%2Fteste%2Fapp.zip?alt=media&token=ff7eeb57-4e86-4c5a-a5cb-e7206de91b9e',
         'output.zip');
 
     var csv = await unZipFile(output);
@@ -53,7 +53,8 @@ class FirebaseHelper {
           List<int> data = file.content;
 
           File(filename)
-            ..createSync(recursive: true)..writeAsBytesSync(data);
+            ..createSync(recursive: true)
+            ..writeAsBytesSync(data);
           print('filename: $filename');
 
           return File(filename);
@@ -69,11 +70,13 @@ class FirebaseHelper {
   }
 
   Future<File> _downloadFile(String url, String filename) async {
-
     var cont = 0;
 
-    HttpClient().getUrl(Uri.parse(url)).then((resquest)=>resquest.close()).then((response){
-      response.listen((data){
+    HttpClient()
+        .getUrl(Uri.parse(url))
+        .then((resquest) => resquest.close())
+        .then((response) {
+      response.listen((data) {
         cont += data.length;
         print('data ' + cont.toString());
       });
@@ -88,20 +91,21 @@ class FirebaseHelper {
     await file.writeAsBytes(bytes);
     return file;
   }
-  Future<String> uploadFile(File file)async{
 
-    final StorageReference storageReference = FirebaseStorage().ref().child('modulo_de_contagem/layout.json');
+  Future<String> uploadFile(File file) async {
+    final StorageReference storageReference =
+        FirebaseStorage().ref().child('modulo_de_contagem/layout.json');
 
     final StorageUploadTask uploadTask = storageReference.putFile(file);
 
-    final StreamSubscription<StorageTaskEvent> streamSubscription = uploadTask.events.listen((event) {
+    final StreamSubscription<StorageTaskEvent> streamSubscription =
+        uploadTask.events.listen((event) {
       // You can use this to notify yourself or your user in any kind of way.
       // For example: you could use the uploadTask.events stream in a StreamBuilder instead
       // to show your user what the current status is. In that case, you would not need to cancel any
       // subscription as StreamBuilder handles this automatically.
 
       // Here, every StorageTaskEvent concerning the upload is printed to the logs.
-
 
       print(event.snapshot.bytesTransferred);
       print('EVENT ${event.type}');
@@ -111,10 +115,9 @@ class FirebaseHelper {
     var storage = await uploadTask.onComplete;
     streamSubscription.cancel();
     return await storage.ref.getDownloadURL();
-
-
-
-
   }
 
+  login(email, senha) {
+
+  }
 }
