@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:modulo_de_contagem/firebaseHelper.dart';
 
 class BlocNovoEvento {
   BuildContext context;
@@ -58,16 +62,19 @@ class BlocNovoEvento {
     }
   }
 
-  submit() {
-    Map map;
+  submit() async {
+    Map<String,dynamic> map;
 
     map = {
       'Data': dateTime,
       'cliente': cliente,
       'filial': filial,
       'tipoServico': tipoServico,
-      'pathBaseDados': pathBaseDados,
+      'pathBaseDados': await FirebaseHelper().uploadFile(File(pathBaseDados), 'Base.csv'),
     };
+
+    
+    Firestore.instance.collection('$cliente/idCliente/evento').document().setData(map);
 
     showDialog(
         context: context,

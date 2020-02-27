@@ -111,7 +111,7 @@ class _PageContagemState extends State<PageContagem> {
                                 RaisedButton(
                                   onPressed: () {
                                     BaseDAO()
-                                        .save(Field(
+                                        .insert(Field(
                                             '',
                                             field2.text,
                                             field3.text,

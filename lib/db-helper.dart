@@ -52,7 +52,6 @@ class DatabaseHelper {
     await dbClient.delete('field');
   }
 
-
   void alterTable(nome, tipo)async{
 
     var bd = await db;

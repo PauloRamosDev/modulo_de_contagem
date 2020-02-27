@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modulo_de_contagem/auth/auth.dart';
 import 'package:modulo_de_contagem/main.dart';

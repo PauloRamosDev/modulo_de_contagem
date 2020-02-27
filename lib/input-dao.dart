@@ -9,7 +9,7 @@ class BaseDAO {
 
   Future<Database> get db => DatabaseHelper.getInstance().db;
 
-  Future<int> save(Field field) async {
+  Future<int> insert(Field field) async {
     var dbClient = await db;
     var id = await dbClient.insert("field", field.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);

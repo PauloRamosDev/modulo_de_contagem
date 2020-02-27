@@ -66,6 +66,7 @@ class FirebaseHelper {
       }
     } catch (e) {
       print(e);
+      return null;
     }
   }
 
@@ -92,9 +93,9 @@ class FirebaseHelper {
     return file;
   }
 
-  Future<String> uploadFile(File file) async {
+  Future<String> uploadFile(File file,String name) async {
     final StorageReference storageReference =
-        FirebaseStorage().ref().child('modulo_de_contagem/layout.json');
+        FirebaseStorage().ref().child('modulo_de_contagem/$name');
 
     final StorageUploadTask uploadTask = storageReference.putFile(file);
 
@@ -110,6 +111,8 @@ class FirebaseHelper {
       print(event.snapshot.bytesTransferred);
       print('EVENT ${event.type}');
     });
+
+
 
 // Cancel your subscription when done.
     var storage = await uploadTask.onComplete;

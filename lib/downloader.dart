@@ -9,6 +9,8 @@ class Downloader{
 
     Dio().download(url, cache).then((response){});
 
+    return null;
+
 
   }
 

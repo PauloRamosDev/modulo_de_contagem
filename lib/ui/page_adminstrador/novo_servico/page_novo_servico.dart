@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:modulo_de_contagem/firebaseHelper.dart';
 import 'package:modulo_de_contagem/ui/commons/widget/custom_picker_file.dart';
 import 'package:modulo_de_contagem/ui/page_adminstrador/novo_servico/widget/custom_drop_down.dart';
 import 'package:modulo_de_contagem/ui/page_layout_contrutor/page_builder_layout.dart';
@@ -82,6 +83,7 @@ class _PageNovoServicoState extends State<PageNovoServico> {
               lista: ['Auditoria', 'Contagem', 'Pesquisa', 'Inventario'],
               hint: 'Tipo de Serviço',
               onSelectedItem: (item) {
+                _valueTipo = item;
                 print(item);
               }),
           Padding(
@@ -145,10 +147,10 @@ class _PageNovoServicoState extends State<PageNovoServico> {
           ),
           Visibility(
             visible: _valueBase,
-            child: CustomPickerFile(onSelectedPathFile: (path){}),
+            child: CustomPickerFile(onSelectedPathFile: (path) {}),
           ),
           RaisedButton(
-            onPressed: () {
+            onPressed: () async{
               // Validate returns true if the form is valid, otherwise false.
               if (_formKey.currentState.validate()) {
                 // If the form is valid, display a snackbar. In the real world,
@@ -156,16 +158,19 @@ class _PageNovoServicoState extends State<PageNovoServico> {
 
 //                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => PageCarregarArquivo()));
 
-                Map mapNovoServico;
+                Map<String,dynamic> mapNovoServico;
                 mapNovoServico = {
                   'Nome': _cNome.text,
                   'Cliente': _cCliente.text,
-                  'Tipo de Serviço': _valueTipo.toString(),
-                  'Modelo BD path': '',
-                  'Modelo Output path': input.path,
+                  'TipoServico': _valueTipo.toString(),
+                  'ModeloInput': await FirebaseHelper().uploadFile(File(input.path), 'Input.json'),
+                  'ModeloOutput': await FirebaseHelper().uploadFile(File(output.path), 'Output.json'),
                   'Base': _valueBase,
-                  'Base path': base.path
+                  'BasePath': base?.path
                 };
+                
+                Firestore.instance.collection('${_cCliente.text}/idCliente/servico').document().setData(mapNovoServico);
+
 
                 showDialog(
                     context: context,
@@ -194,7 +199,7 @@ class _PageNovoServicoState extends State<PageNovoServico> {
             icon: Icon(Icons.add_circle_outline),
             onPressed: () async {
               File _file = await Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => PageBuilderLayout()));
+                  MaterialPageRoute(builder: (context) => PageBuilderLayout('Input')));
 
               try {
                 if (await (_file.exists())) {
@@ -207,32 +212,6 @@ class _PageNovoServicoState extends State<PageNovoServico> {
               }
             }),
         Text('Criar Modelo Input')
-      ],
-    );
-  }
-
-  _modelCriacaoOutput() {
-    return Row(
-      children: <Widget>[
-        IconButton(
-            icon: Icon(Icons.add_circle_outline),
-            onPressed: () async {
-              File _file = await Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => PageBuilderLayout()));
-
-              try {
-                if (await (_file.exists())) {
-                  output = _file;
-                  outputExist = true;
-                  setState(() {});
-                } else {
-                  print('file nao exist');
-                }
-              } catch (error) {
-                print(error.toString());
-              }
-            }),
-        Text('Criar Modelo Output')
       ],
     );
   }
@@ -259,6 +238,32 @@ class _PageNovoServicoState extends State<PageNovoServico> {
                 });
               });
             }),
+      ],
+    );
+  }
+
+  _modelCriacaoOutput() {
+    return Row(
+      children: <Widget>[
+        IconButton(
+            icon: Icon(Icons.add_circle_outline),
+            onPressed: () async {
+              File _file = await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => PageBuilderLayout('Output')));
+
+              try {
+                if (await (_file.exists())) {
+                  output = _file;
+                  outputExist = true;
+                  setState(() {});
+                } else {
+                  print('file nao exist');
+                }
+              } catch (error) {
+                print(error.toString());
+              }
+            }),
+        Text('Criar Modelo Output')
       ],
     );
   }

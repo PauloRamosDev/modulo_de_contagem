@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              PageBuilderLayout()));
+                              PageBuilderLayout('Teste')));
                   break;
               }
             },
@@ -414,7 +414,7 @@ class _CustomDialogState extends State<CustomDialog> {
 
     for (var i = 1; i < data.length; i++) {
       var field = data[i].split(';');
-      var id = await BaseDAO().save(Field(field[0], field[1], field[2],
+      var id = await BaseDAO().insert(Field(field[0], field[1], field[2],
           field[3], field[4], field[5], field[6], field[7]));
 
       setState(() {
