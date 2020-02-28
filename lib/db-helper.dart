@@ -47,7 +47,7 @@ class DatabaseHelper {
     return dbClient.close();
   }
 
-  void delete()async{
+  Future<void> delete()async{
     var dbClient = await db;
     await dbClient.delete('field');
   }

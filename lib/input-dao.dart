@@ -6,12 +6,18 @@ import 'db-helper.dart';
 
 // Data Access Object
 class BaseDAO {
-
   Future<Database> get db => DatabaseHelper.getInstance().db;
 
   Future<int> insert(Field field) async {
     var dbClient = await db;
     var id = await dbClient.insert("field", field.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+
+  Future<int> insertMap(map) async {
+    var dbClient = await db;
+    var id = await dbClient.insert("field", map,
         conflictAlgorithm: ConflictAlgorithm.replace);
     return id;
   }
@@ -22,7 +28,6 @@ class BaseDAO {
     final list = await dbClient.rawQuery('select * from field');
 
     final sevico = list.map<Field>((json) => Field.fromMap(json)).toList();
-
 
     return sevico;
   }
@@ -39,10 +44,10 @@ class BaseDAO {
     return null;
   }
 
-  Future<Field> findByField(int field,String input) async {
+  Future<Field> findByField(int field, String input) async {
     var dbClient = await db;
-    final list =
-    await dbClient.rawQuery('select * from field where field$field = ?', [input]);
+    final list = await dbClient
+        .rawQuery('select * from field where field$field = ?', [input]);
 
     if (list.length > 0) {
       return new Field.fromMap(list.first);
@@ -68,24 +73,30 @@ class BaseDAO {
     return await dbClient.rawDelete('delete from field where id = ?', [id]);
   }
 
-  Future<int> deleteAll() async {
+  Future deleteAll() async {
     var dbClient = await db;
-    return await dbClient.rawDelete('delete from field');
-  }
+//    await dbClient.rawQuery('CREATE TABLE IF NOT EXISTS field');
 
+//      await dbClient.rawQuery('DROP TABLE field');
+    var tables =
+        await dbClient.rawQuery("SELECT * FROM field WHERE type='table'");
+
+    print(tables);
+
+    return await dbClient.rawQuery('CREATE TABLE IF NOT EXISTS field');
+  }
 
   Future<int> update(Field field) async {
     var dbClient = await db;
 
-    var update = await dbClient.update("field",field.toMap(),where: "id = ${field.id.toString()}");
+    var update = await dbClient.update("field", field.toMap(),
+        where: "id = ${field.id.toString()}");
 
     return update;
-
   }
 }
 
 class Field {
-
   int id;
   String field1;
   String field2;
@@ -96,10 +107,9 @@ class Field {
   String field7;
   String field8;
 
-  Field(this.field1, this.field2, this.field3, this.field4,
-      this.field5, this.field6, this.field7, this.field8);
+  Field(this.field1, this.field2, this.field3, this.field4, this.field5,
+      this.field6, this.field7, this.field8);
 
-  
   Field.fromMap(Map<String, dynamic> map) {
     id = map['id'];
     field1 = map["field1"];
@@ -126,8 +136,4 @@ class Field {
     };
     return map;
   }
-
-
-
 }
-

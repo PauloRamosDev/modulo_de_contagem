@@ -13,7 +13,7 @@ class FirebaseHelper {
   Future<File> teste() async {
 //    ref.collection('teste').document('123').setData({'teste': 'teste'});
 
-    File output = await _downloadFile(
+    File output = await downloadFile(
 //        'https://firebasestorage.googleapis.com/v0/b/app-projeto-4cc0a.appspot.com/o/input%2Fteste%2FInput.zip?alt=media&token=a59d81bb-e5fc-423c-836e-bea953a7b64f',
         'https://firebasestorage.googleapis.com/v0/b/app-projeto-4cc0a.appspot.com/o/input%2Fteste%2Fapp.zip?alt=media&token=ff7eeb57-4e86-4c5a-a5cb-e7206de91b9e',
         'output.zip');
@@ -70,7 +70,7 @@ class FirebaseHelper {
     }
   }
 
-  Future<File> _downloadFile(String url, String filename) async {
+  Future<File> downloadFile(String url, String filename) async {
     var cont = 0;
 
     HttpClient()
