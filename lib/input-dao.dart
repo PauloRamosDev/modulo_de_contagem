@@ -32,6 +32,14 @@ class BaseDAO {
     return sevico;
   }
 
+  Future<List<Map>> findAllMap() async {
+    final dbClient = await db;
+
+    final list = await dbClient.rawQuery('SELECT * FROM field');
+
+    return list.map((map)=>map).toList();
+  }
+
   Future<Field> findById(int id) async {
     var dbClient = await db;
     final list =
@@ -64,6 +72,7 @@ class BaseDAO {
 
   Future<int> count() async {
     final dbClient = await db;
+
     final list = await dbClient.rawQuery('select count(*) from field');
     return Sqflite.firstIntValue(list);
   }
@@ -74,16 +83,13 @@ class BaseDAO {
   }
 
   Future deleteAll() async {
+
     var dbClient = await db;
-//    await dbClient.rawQuery('CREATE TABLE IF NOT EXISTS field');
 
-//      await dbClient.rawQuery('DROP TABLE field');
-    var tables =
-        await dbClient.rawQuery("SELECT * FROM field WHERE type='table'");
+    await dbClient.rawQuery('DROP TABLE IF EXISTS field');
 
-    print(tables);
-
-    return await dbClient.rawQuery('CREATE TABLE IF NOT EXISTS field');
+    return await dbClient
+        .rawQuery('CREATE TABLE IF NOT EXISTS field(id INTEGER PRIMARY KEY)');
   }
 
   Future<int> update(Field field) async {
