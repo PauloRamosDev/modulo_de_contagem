@@ -31,8 +31,7 @@ class DatabaseHelper {
   }
 
   void _onCreate(Database db, int newVersion) async {
-    await db.execute(
-        'CREATE TABLE field(id INTEGER PRIMARY KEY)');
+    await db.execute('CREATE TABLE field(id INTEGER PRIMARY KEY)');
   }
 
   Future<FutureOr<void>> _onUpgrade(
@@ -47,18 +46,16 @@ class DatabaseHelper {
     return dbClient.close();
   }
 
-  Future<void> delete()async{
+  Future<void> delete() async {
     var dbClient = await db;
     await dbClient.delete('field');
   }
 
-  void alterTable(nome, tipo)async{
-
+  void alterTable(nome, tipo) async {
     var bd = await db;
 
-    bd.execute('ALTER TABLE field ADD $nome VARCHAR').catchError((error){
+    bd.execute('ALTER TABLE field ADD $nome VARCHAR').catchError((error) {
       print(error.toString());
     });
-
   }
 }

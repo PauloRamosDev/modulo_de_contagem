@@ -37,7 +37,7 @@ class BaseDAO {
 
     final list = await dbClient.rawQuery('SELECT * FROM field');
 
-    return list.map((map)=>map).toList();
+    return list.toList();
   }
 
   Future<Field> findById(int id) async {

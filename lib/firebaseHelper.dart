@@ -79,7 +79,7 @@ class FirebaseHelper {
         .then((response) {
       response.listen((data) {
         cont += data.length;
-        print('data ' + cont.toString());
+        print('bytes baixados ' + cont.toString());
       });
     });
 

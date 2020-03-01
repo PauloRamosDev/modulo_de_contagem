@@ -7,13 +7,14 @@ import 'package:path_provider/path_provider.dart';
 class DialogDownloader extends StatefulWidget {
   final String title, description, buttonText;
   final String url;
+  final String fileName;
 
-  DialogDownloader({
-    @required this.title,
-    @required this.description,
-    @required this.buttonText,
-    this.url,
-  });
+  DialogDownloader(
+      {@required this.title,
+      @required this.description,
+      @required this.buttonText,
+      @required this.url,
+      @required this.fileName});
 
   @override
   _DialogDownloaderState createState() => _DialogDownloaderState();
@@ -113,37 +114,36 @@ class _DialogDownloaderState extends State<DialogDownloader> {
     );
   }
 
-  _download(url) async {
+  _download(String url) async {
     var dio = Dio();
 
     var response = await download(dio, url);
 
-    Navigator.pop(context,response);
+    Navigator.pop(context, response);
   }
 
   Future<String> download(Dio dio, String url) async {
     CancelToken cancelToken = CancelToken();
     Directory path = await getTemporaryDirectory();
-    var pathFinal = path.path + '/archive.json';
+    var pathFinal = path.path + '/${widget.fileName}';
     var res = await File(pathFinal).exists();
-    if(!res){
+    if (res) {
+      try {
+        await dio.download(url, pathFinal,
+            onReceiveProgress: showDownloadProgress, cancelToken: cancelToken);
 
-    try {
-      await dio.download(url, pathFinal,
-          onReceiveProgress: showDownloadProgress, cancelToken: cancelToken);
+        var res = await File(pathFinal).exists();
 
-      var res = await File(pathFinal).exists();
-
-      if (res) {
-        return pathFinal;
-      } else {
+        if (res) {
+          return pathFinal;
+        } else {
+          return null;
+        }
+      } catch (e) {
+        print(e);
         return null;
       }
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }else{
+    } else {
       return pathFinal;
     }
   }
@@ -157,8 +157,6 @@ class _DialogDownloaderState extends State<DialogDownloader> {
       });
     }
   }
-
-
 }
 
 class Consts {

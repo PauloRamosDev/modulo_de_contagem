@@ -150,10 +150,12 @@ class _MyHomePageState extends State<MyHomePage> {
               context: context,
               builder: (context) {
                 return DialogDownloader(
-                    title: 'Download',
-                    description: 'Arquivo cache',
-                    buttonText: 'Cancelar',
-                    url: layout);
+                  title: 'Download',
+                  description: 'Arquivo cache',
+                  buttonText: 'Cancelar',
+                  url: layout,
+                  fileName: 'archive.json',
+                );
               });
 
           File fileInput = File(retornoIput);
