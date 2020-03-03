@@ -44,6 +44,7 @@ class _PageServiceState extends State<PageService> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Base de dados'),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.delete),
@@ -58,10 +59,11 @@ class _PageServiceState extends State<PageService> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.file_download),onPressed: () {
-        list.clear();
-        _generate('','');
-      }),
+          child: Icon(Icons.file_download),
+          onPressed: () {
+            list.clear();
+            _generate('', '');
+          }),
       body: ListView.builder(
         itemBuilder: (context, index) {
           if (index >= 0) {
@@ -80,8 +82,26 @@ class _PageServiceState extends State<PageService> {
     );
   }
 
-  Future<void> _generate(urlHeaders,urlBaseDados) async {
+  Future<void> _generate(urlHeaders, urlBaseDados) async {
     print('//abrindo dialog para buscar dados');
+
+    print('//baixando input de dados');
+    //baixando input de dados
+    DocumentSnapshot base = await Firestore()
+        .document('/Carrefour/idCliente/evento/RkPNm3SjSSyyTQqPfXIr')
+        .get();
+
+    String pathBase = await showDialog(
+        context: context,
+        builder: (context) {
+          return DialogDownloader(
+            title: 'Donwloader',
+            description: 'Baixando base de Dados',
+            buttonText: 'Cancel',
+            fileName: 'base1.csv',
+            url: base.data['pathBaseDados'],
+          );
+        });
 
 //    showDialog(
 //        barrierDismissible: false,
@@ -97,8 +117,27 @@ class _PageServiceState extends State<PageService> {
 
     print('//deletando BD');
 
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (c) {
+          return AlertDialog(
+            content: Container(
+              child: Center(
+                  child: Row(
+                children: <Widget>[
+                  CircularProgressIndicator(),
+                  Text('     Processando dados!!!')
+                ],
+              )),
+              height: 100,
+            ),
+          );
+        });
+
     //deletando BD
     await BaseDAO().deleteAll();
+    headers.clear();
 
 //    DocumentSnapshot doc = await Firestore()
 //        .document('/Carrefour/idCliente/servico/N8XSH0UQ22aOwdW0KgLC')
@@ -141,42 +180,15 @@ class _PageServiceState extends State<PageService> {
 //      DatabaseHelper().alterTable(header, 'VARCHAR');
 //    });
 
-    print('//baixando input de dados');
-    //baixando input de dados
-    DocumentSnapshot base = await Firestore()
-        .document('/Carrefour/idCliente/evento/RkPNm3SjSSyyTQqPfXIr')
-        .get();
-
-    String pathBase = await showDialog(
-        context: context,
-        builder: (context) {
-          return DialogDownloader(
-            title: 'Donwloader',
-            description: 'Baixando base de Dados',
-            buttonText: 'Cancel',
-            fileName: 'base.csv',
-            url: base.data['pathBaseDados'],
-          );
-        });
 //    File fileBase = await FirebaseHelper()
 //        .downloadFile(base.data['pathBaseDados'], 'base.csv');
 
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (c) {
-          return AlertDialog(
-            content: Container(
-              child: Center(child: Row(children: <Widget>[CircularProgressIndicator(),Text('     Processando dados!!!')],)),
-              height: 100,
-            ),
-          );
-        });
+    print(pathBase);
 
-    var rows = await File(pathBase).readAsLines(encoding: latin1);
+    var rows = await File(pathBase).readAsLines();
 
-    headers.addAll(rows.first.split(';'));
-
+    headers.addAll(
+        rows.first.split(';').map((l) => l.replaceAll(' ', '')).toList());
 
     SharedPreferences.getInstance()
         .then((value) => value.setStringList('headers', headers));
@@ -188,7 +200,6 @@ class _PageServiceState extends State<PageService> {
     rows.forEach((linha) async {
       //5,4,7
       var dados = linha.split(';');
-
 
       Map<String, dynamic> map = Map<String, dynamic>();
 

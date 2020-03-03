@@ -127,7 +127,7 @@ class _DialogDownloaderState extends State<DialogDownloader> {
     Directory path = await getTemporaryDirectory();
     var pathFinal = path.path + '/${widget.fileName}';
     var res = await File(pathFinal).exists();
-    if (res) {
+    if (!res) {
       try {
         await dio.download(url, pathFinal,
             onReceiveProgress: showDownloadProgress, cancelToken: cancelToken);
