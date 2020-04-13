@@ -4,6 +4,7 @@ class CustomFormField extends StatelessWidget {
   final TextEditingController controller;
   final String hint;
   final bool required;
+
   CustomFormField(this.hint, this.controller, this.required);
 
   @override
@@ -17,6 +18,9 @@ class CustomFormField extends StatelessWidget {
             return '*Obrigatório';
           }
           return null;
+        },
+        onEditingComplete: () {
+          print('edicao completa');
         },
         obscureText: false,
         decoration: InputDecoration(

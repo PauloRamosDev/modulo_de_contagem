@@ -9,7 +9,7 @@ class CustomPickerFile extends StatefulWidget {
   CustomPickerFile(
       {this.title = 'Arquivo',
       @required this.onSelectedPathFile,
-      this.fileType = FileType.ANY});
+      this.fileType = FileType.any});
 
   @override
   _CustomPickerFileState createState() => _CustomPickerFileState();

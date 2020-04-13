@@ -42,7 +42,7 @@ class _PageCarregarArquivoState extends State<PageCarregarArquivo> {
               print('selecionar arquivo');
               try {
                 File file = await FilePicker.getFile(
-                    type: FileType.CUSTOM, fileExtension: 'CSV');
+                    type: FileType.custom, allowedExtensions: ['CSV']);
                 fileSize =
                     (await file.length() / 1024 / 1024).toStringAsFixed(2) +
                         ' MB';

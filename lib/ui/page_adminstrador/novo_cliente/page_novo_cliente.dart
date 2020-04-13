@@ -44,7 +44,7 @@ class _PageNovoClienteState extends State<PageNovoCliente> {
             lista: ['Varejo', 'Industria', 'Informatica'],
           ),
           CustomPickerFile(
-              fileType: FileType.IMAGE,
+              fileType: FileType.image,
               title: 'Logo',
               onSelectedPathFile: (path) {
                 bloc.logo = path;
